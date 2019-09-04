@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script type="text/javascript" src="./qwebchannel.js"></script>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v4.0"></script>
+        <script
+          src="https://code.jquery.com/jquery-3.4.1.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous"></script>
+         <style type="text/css">
+            html {
+                height: 100%;
+                width: 100%;
+            }
+            #input {
+            border: solid 1px #4193BF;
+                outline: none;
+                padding: 5px;
+                width: 250px;
+            }
+            #send {
+            border: 0;
+                background-color: black;
+                color: white;
+                font-size: 16px;
+                padding: 8px;
+                width: 50px;
+            }
+            #output {
+            background-color: #fafafa;
+                margin: 0 auto;
+                padding: 10px;
+                width: 250px;
+                font-family: arial, verdana, ms sans serif;
+                font-size: 10pt;
+            }
+
+            .imgCentrada {
+              background-color: #fafafa;
+              margin: 1rem;
+              padding: 1rem;
+              /*border: 2px solid #ccc;*/
+              border-radius: 15px;
+              /* IMPORTANTE */
+              text-align: center;
+            }
+            .imgCentradaUser {
+              background-color: #fafafa;
+              margin: 1rem;
+              padding: 1rem;
+              border-radius: 10px;
+              /* IMPORTANTE */
+              text-align: center;
+            }
+            .carousel-item{
+             max-width: 100%;
+             height: 20%;
+            /* IMPORTANTE */
+          }
+          .card-img-top:hover {
+          filter: opacity(.7);
+          }
+          .card{
+          margin: 0 auto; /* Added */
+                float: none; /* Added */
+                margin-bottom: 10px; /* Added */
+          }
+          .rounded-circle-user{
+          width:50px;
+          height:50px;
+          border-radius:150px;
+
+          }
+          .rounded-circle {
+              width:50px;
+              height:50px;
+              border-radius: 15px;
+              /* IMPORTANTE */
+              text-align: center;
+              border-radius:150px;
+          }
+          .chat{
+          position: fixed;
+             min-height: 30%px;
+             width: 25%;
+             text-align: center;
+             word-wrap: break-word;
+
+          }
+        body{
+        background-color: gray;
+        background-image: url("C:\Users\yiyos\Pictures\IMGA\crop.jpg");
+        }
+
+        </style>
+
+
+
+   </head>
+    <body>
+
+
+<!--Para subir imagenes<form enctype='multipart/form-data' action='' method='POST'>
+<input name='uploadedfile' type='file'><br>
+<input type='submit' value='Subir archivo'>
+</form>-->
+
+<!--<?php
+
+$target_path = "Other files/";
+$target_path = $target_path.basename( $_FILES['uploadedfile']['name']);
+if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'],$target_path))
+{
+console.log('si se guardo');
+echo "<span style='color:green;'>El archivo".basename( $_FILES['uploadedfile']['name'])."ha sido subido</span><br>";
+}else{
+echo "Ha ocurrido un error, trate de nuevo!";
+}
+?>-->
+
+
+<!-- Image and text -->
+<nav class="navbar navbar-light bg-light" id="NVAR">
+  <a class="navbar-brand" href="#">
+    <img src="C:\Users\yiyos\Documents\Logos\ag.png" width="40" height="40" class="d-inline-block align-top" alt="">
+   Gram
+  </a>
+  <!-- Imagenes circulaes-->
+  <img src="C:\Users\yiyos\Pictures\IMGA\img3.jpg" alt="..." class="rounded-circle">
+</nav>
+
+<!--Boton del chat-->
+<!--BOTON PARA ABRIR CHAT-->
+<div class="chat">
+<button type="button" class="btn btn-dark" id="show">Mensajes</button>
+
+<div id="element" style="display:none" >
+<textarea id="output"  cols="10" rows="5"></textarea><br />
+ <input id="input" />
+<br>
+<input type="submit" id="send" value="Send" onclick="javascript:click();" />
+</div>
+</div>
+
+
+    <!--Carrusel De Imagenes<div class="imgCentrada">
+    <div class="bd-example">
+      <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+          <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="C:\Users\yiyos\Pictures\IMGA\img2.jpg" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>First slide label</h5>
+              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="C:\Users\yiyos\Pictures\IMGA\img2.jpg" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Second slide label</h5>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="C:\Users\yiyos\Pictures\IMGA\img2.jpg" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Third slide label</h5>
+              <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+            </div>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+    </div>-->
+
+    <!--BOTON ME GUSTA <div id="fb-root"></div>   <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-width="" data-layout="button" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div>-->
+
+
+<!--Cartas De Comentarios-->
+
+    <div class="imgCentrada">
+    <div class="card" style="width: 40rem;">
+      <img src="C:\Users\yiyos\Pictures\IMGA\img23.jpg" class="card-img-top" alt="...">
+      <div class="imgCentradaUser" id="img1" >
+      <img src="C:\Users\yiyos\Pictures\IMGA\user1.png" alt="..."   class="rounded-circle-user" onclick="Comentar();">
+      </div>
+      <br>
+      <iframe Class="card" src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+      <div class="card-body">
+        <p class="card-text">El problema no fue hallarte
+        El problema es olvidarte
+        El problema no es tu ausencia
+        El problema es que te espero
+        El problema no es problema
+        El problema es que me duele
+        El problema no es que mientas
+        El problema es que te creo</p>
+        <p id="comenta"></p>
+      </div>
+      </div>
+
+    <div class="card" style="width: 40rem;">
+      <img src="C:\Users\yiyos\Pictures\IMGA\img2.jpg" class="card-img-top" alt="..." >
+      <div class="imgCentradaUser" id="img2" >
+      <img src="C:\Users\yiyos\Pictures\IMGA\user2.png" alt="..." class="rounded-circle-user" onclick="Comentar2();">
+      </div>
+      <br>
+      <iframe Class="card" src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+      <div class="card-body">
+        <p class="card-text">El problema no es que juegues
+        El problema es que es conmigo
+        Si me gustaste por ser libre
+        Quien soy yo para cambiarte
+        Si me quede queriendo solo
+        Como hacer para obligarte
+        El problema no es quererte
+        Es que tu no sientas lo mismo
+        Y como deshacerme de ti si no te tengo</p>
+        <p id="comenta2"></p>
+    </div>
+    </div>
+
+    <div class="card" style="width: 40rem;">
+      <img src="C:\Users\yiyos\Pictures\IMGA\img0.jpg" class="card-img-top" alt="...">
+      <div class="imgCentradaUser" id="img3">
+      <img src="C:\Users\yiyos\Pictures\IMGA\user3.jpeg" alt="..." class="rounded-circle-user" onclick="Comentar3();">
+      </div>
+      <br>
+      <iframe Class="card" src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+
+        <div class="card-body">
+        <p class="card-text">Y como deshacerme de ti si no te tengo
+        Como alejarme de ti si estas tan lejos
+        Como encontrarle una pestaña
+        A lo que nunca tuvo ojos
+        Como encontrarle plataforma
+        A lo que siempre fue un barranco
+        Como encontrar el la alacena
+        Los besos que no me diste
+        Y como deshacerme de ti si no te tengo
+        Como alejarme de ti si estas tan lejos
+        Y el que es problema no es cambiarte
+        El problema es que no quiero</p>
+        <p id="comenta3"></p>
+    </div>
+    </div>
+
+    <div class="card" style="width: 40rem;">
+      <img src="C:\Users\yiyos\Pictures\IMGA\img2.jpg" class="card-img-top" alt="..." >
+      <div class="imgCentradaUser" id="img4">
+      <img src="C:\Users\yiyos\Pictures\IMGA\user2.png" alt="..." class="rounded-circle-user" onclick="Comentar4();">
+      </div>
+      <br>
+      <iframe Class="card" src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+
+        <div class="card-body">
+        <p class="card-text">El problema no es que duela
+        El problema es que me gusta
+        El problema no es el daño
+        El problema son las huellas
+        El problema no es lo que haces
+        El problema es que lo olvido
+        El problema no es que digas
+        El problema es lo que callas</p>
+        <p id="comenta4"></p>
+    </div>
+    </div>
+
+
+<div class="imgCentrada">
+<div class="card" style="width: 40rem;">
+  <img src="C:\Users\yiyos\Pictures\IMGA\img7.jpg" class="card-img-top" alt="...">
+  <div class="imgCentradaUser">
+  <img src="C:\Users\yiyos\Pictures\IMGA\user1.png" alt="..." class="rounded-circle-user">
+  </div>
+  <br>
+  <iframe Class="card" src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+  <div class="card-body">
+    <p class="card-text">El problema no fue hallarte
+    El problema es olvidarte
+    El problema no es tu ausencia
+    El problema es que te espero
+    El problema no es problema
+    El problema es que me duele
+    El problema no es que mientas
+    El problema es que te creo</p>
+  </div>
+  </div>
+
+<div class="card" style="width: 40rem;">
+  <img src="C:\Users\yiyos\Pictures\IMGA\img6.jpg" class="card-img-top" alt="...">
+  <div class="imgCentradaUser">
+  <img src="C:\Users\yiyos\Pictures\IMGA\user2.png" alt="..." class="rounded-circle-user">
+  </div>
+  <br>
+  <iframe Class="card" src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+  <div class="card-body">
+    <p class="card-text">El problema no es que juegues
+    El problema es que es conmigo
+    Si me gustaste por ser libre
+    Quien soy yo para cambiarte
+    Si me quede queriendo solo
+    Como hacer para obligarte
+    El problema no es quererte
+    Es que tu no sientas lo mismo
+    Y como deshacerme de ti si no te tengo</p>
+</div>
+</div>
+
+<div class="card" style="width: 40rem;">
+  <img src="C:\Users\yiyos\Pictures\IMGA\img10.png" class="card-img-top" alt="...">
+  <div class="imgCentradaUser">
+  <img src="C:\Users\yiyos\Pictures\IMGA\user3.jpeg" alt="..." class="rounded-circle-user">
+  </div>
+  <br>
+  <iframe Class="card" src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+
+    <div class="card-body">
+    <p class="card-text">Y como deshacerme de ti si no te tengo
+    Como alejarme de ti si estas tan lejos
+    Como encontrarle una pestaña
+    A lo que nunca tuvo ojos
+    Como encontrarle plataforma
+    A lo que siempre fue un barranco
+    Como encontrar el la alacena
+    Los besos que no me diste
+    Y como deshacerme de ti si no te tengo
+    Como alejarme de ti si estas tan lejos
+    Y el que es problema no es cambiarte
+    El problema es que no quiero</p>
+</div>
+</div>
+    <!--aqui quiete un div ver luego-->
+<div class="card" style="width: 40rem;">
+  <img src="C:\Users\yiyos\Pictures\IMGA\img3.jpg" class="card-img-top" alt="...">
+  <div class="imgCentradaUser">
+  <img src="C:\Users\yiyos\Pictures\IMGA\user2.png" alt="..." class="rounded-circle-user">
+  </div>
+  <br>
+  <iframe Class="card" src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+
+    <div class="card-body">
+    <p class="card-text">El problema no es que duela
+    El problema es que me gusta
+    El problema no es el daño
+    El problema son las huellas
+    El problema no es lo que haces
+    El problema es que lo olvido
+    El problema no es que digas
+    El problema es lo que callas</p>
+</div>
+</div>
+</div>
+
+    </body>
+
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!--lOGICA del chat-->
+    <script type="text/javascript">
+        //BEGIN SETUP //Funcionalidad de CHAT
+        function output(message) {
+            var output = document.getElementById("output");
+            output.innerHTML = output.innerHTML + message + "\n";
+        }
+        window.onload = function() {
+            if (location.search != "")
+                var baseUrl = (/[?&]webChannelBaseUrl=([A-Za-z0-9\-:/\.]+)/.exec(location.search)[1]);
+            else
+                var baseUrl = "ws://localhost:12345";
+
+            output("Estas conecatado en tu " + baseUrl + ".");
+            var socket = new WebSocket(baseUrl);
+
+            socket.onclose = function() {
+                console.error("web channel closed");
+            };
+            socket.onerror = function(error) {
+                console.error("web channel error: " + error);
+            };
+            socket.onopen = function() {
+                //output("WebSocket connected, setting up QWebChannel.");
+                new QWebChannel(socket, function(channel) {
+                    // make core object accessible globally
+                    window.core = channel.objects.core;
+
+                    document.getElementById("send").onclick = function() {
+                        var input = document.getElementById("input");
+                        var text = input.value;
+                        if (!text) {
+                            return;
+                        }
+
+                        output("Mandar Mensaje: " + text);
+                        input.value = "";
+                        core.receiveText(text);
+                    }
+
+                    core.sendText.connect(function(message) {
+                        output("Mensaje Recibido: " + message);
+                        alert("Mensaje nuevo we, checa tu bandeja de mensajes");
+                    });
+
+                    core.receiveText("Listo!!");
+                    output("Conectado!!");
+                });
+            }
+        }
+        //END SETUP
+    </script>
+
+    <!--MOSTRAR CHAT-->
+    <script type="text/javascript">
+$(document).ready(function(){
+    $("#hide").on('click', function() {
+        $("#element").hide();
+        return false;
+    });
+
+    $("#show").on('click', function() {
+        $("#element").toggle();
+        console.log("este metodo entro");
+
+        return false;
+    });
+});
+    </script>
+nsertAdjacentHTML("beforeend","<li>Elemento</li>");
+<script type="text/javascript">
+var coment = document.getElementById("img1");
+function Comentar(){
+var inp = document.createElement("INPUT");
+var inp2 = document.createElement("INPUT");
+inp.type='text';
+inp.id='tex';
+inp2.type='button';
+inp2.value='Comentar';
+inp2.id='tex2';
+img1.appendChild(inp);
+img1.appendChild(inp2);
+var cmnt = document.getElementById("tex2");
+cmnt.onclick = function (){
+alert("juju");
+var valor = document.getElementById('tex').value;
+            document.getElementById("comenta").innerHTML="<p><b>Comentario: </b></p>"+valor;
+            img1.removeChild(inp);
+            img1.removeChild(inp2);
+   }
+
+}
+
+ </script>
+ <script type="text/javascript">
+ var coment = document.getElementById("img2");
+ function Comentar2(){
+ var inp = document.createElement("INPUT");
+ var inp2 = document.createElement("INPUT");
+ inp.type='text';
+ inp.id='tex';
+ inp2.type='button';
+ inp2.value='Comentar';
+ inp2.id='tex2';
+ img2.appendChild(inp);
+ img2.appendChild(inp2);
+ var cmnt = document.getElementById("tex2");
+ cmnt.onclick = function (){
+ alert("juju");
+ var valor = document.getElementById('tex').value;
+             document.getElementById("comenta2").innerHTML="<p><b>Comentario: </b></p>"+valor;
+             img2.removeChild(inp);
+             img2.removeChild(inp2);
+    }
+ }
+
+  </script>
+  <script type="text/javascript">
+  var coment = document.getElementById("img3");
+  function Comentar3(){
+  var inp = document.createElement("INPUT");
+  var inp2 = document.createElement("INPUT");
+  inp.type='text';
+  inp.id='tex';
+  inp2.type='button';
+  inp2.value='Comentar';
+  inp2.id='tex2';
+  img3.appendChild(inp);
+  img3.appendChild(inp2);
+  var cmnt = document.getElementById("tex2");
+  cmnt.onclick = function (){
+  alert("juju");
+  var valor = document.getElementById('tex').value;
+              document.getElementById("comenta3").innerHTML="<p><b>Comentario: </b></p>"+valor;
+              img3.removeChild(inp);
+              img3.removeChild(inp2);
+     }
+  }
+   </script>
+   <script type="text/javascript">
+   var coment = document.getElementById("img4");
+   function Comentar4(){
+   var inp = document.createElement("INPUT");
+   var inp2 = document.createElement("INPUT");
+   inp.type='text';
+   inp.id='tex';
+   inp2.type='button';
+   inp2.value='Comentar';
+   inp2.id='tex2';
+   img4.appendChild(inp);
+   img4.appendChild(inp2);
+   var cmnt = document.getElementById("tex2");
+   cmnt.onclick = function (){
+   alert("juju");
+   var valor = document.getElementById('tex').value;
+               document.getElementById("comenta4").innerHTML="<p><b>Comentario: </b></p>"+valor;
+               img4.removeChild(inp);
+               img4.removeChild(inp2);
+      }
+   }
+    </script>
+</html>
